@@ -1,0 +1,7 @@
+name: heros-core
+version: ${project.version}
+main: net.herospvp.heroscore.HerosCore
+authors: [ Niketion, Sorridi ]
+commands:
+  coins:
+  coinsadmin:
