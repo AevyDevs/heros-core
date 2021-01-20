@@ -20,32 +20,43 @@ public class CoinsAdminCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("herospvp.admin")) return true;
 
         if (args.length > 2) {
             OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
             HPlayer player = plugin.getPlayersHandler().getPlayer(target.getUniqueId());
 
+            if (player == null) {
+                sender.sendMessage("Operazione non riuscita, il player NON ESISTE!");
+                return true;
+            }
+
+            int value;
+
+            try {
+                value = Integer.parseInt(args[2]);
+            } catch (Exception e) {
+                sender.sendMessage("/ca [set/add/remove] [player] [amount]");
+                return true;
+            }
+
             switch (args[0].toLowerCase()) {
                 case "set": {
-                    if (player != null) {
-                        player.setCoins(Integer.parseInt(args[2]));
-                    }
+                    player.setCoins(value);
                     save(target.getUniqueId(), sender);
                     break;
                 }
                 case "add": {
-                    if (player != null) {
-                        player.setCoins(Integer.parseInt(args[2])+player.getCoins());
-                    }
+                    player.setCoins(value + player.getCoins());
                     save(target.getUniqueId(), sender);
                     break;
                 }
                 case "remove": {
-                    if (player != null) {
-                        player.setCoins(player.getCoins()-Integer.parseInt(args[2]));
-                    }
+                    player.setCoins(player.getCoins() - value);
                     save(target.getUniqueId(), sender);
+                    break;
+                }
+                default: {
+                    sender.sendMessage("/ca [set/add/remove] [player] [amount]");
                     break;
                 }
             }
@@ -57,7 +68,7 @@ public class CoinsAdminCommand implements CommandExecutor {
     }
 
     private void save(UUID uuid, CommandSender sender) {
-        plugin.getMusician().updateMirror(plugin.getPlayersHandler().save(uuid, () -> {
+        plugin.getMusician().update(plugin.getPlayersHandler().save(uuid, () -> {
             sender.sendMessage("Coins impostati al nuovo valore!");
         }));
         plugin.getMusician().play();

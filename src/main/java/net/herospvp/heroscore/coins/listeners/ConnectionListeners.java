@@ -17,7 +17,7 @@ public class ConnectionListeners implements Listener {
 
     @EventHandler
     public void on(PlayerJoinEvent event) {
-        plugin.getMusician().updateMirror(plugin.getPlayersHandler().load(event.getPlayer().getUniqueId(), () -> { }));
+        plugin.getMusician().update(plugin.getPlayersHandler().load(event.getPlayer().getUniqueId(), () -> { }));
         plugin.getMusician().play();
     }
 
@@ -26,7 +26,7 @@ public class ConnectionListeners implements Listener {
         HPlayer player = plugin.getPlayersHandler().getPlayer(event.getPlayer().getUniqueId());
         if (!player.isEdited()) return;
 
-        plugin.getMusician().updateMirror(plugin.getPlayersHandler().save(event.getPlayer().getUniqueId(), () -> {
+        plugin.getMusician().update(plugin.getPlayersHandler().save(event.getPlayer().getUniqueId(), () -> {
            plugin.getPlayersHandler().remove(event.getPlayer().getUniqueId());
         }));
         plugin.getMusician().play();

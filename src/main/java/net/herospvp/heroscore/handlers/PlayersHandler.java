@@ -1,10 +1,9 @@
 package net.herospvp.heroscore.handlers;
 
 import lombok.Getter;
+import net.herospvp.database.items.Notes;
+import net.herospvp.database.items.Papers;
 import net.herospvp.heroscore.HerosCore;
-import net.herospvp.heroscore.database.Musician;
-import net.herospvp.heroscore.database.items.Notes;
-import net.herospvp.heroscore.database.items.Papers;
 import net.herospvp.heroscore.objects.HPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -27,7 +26,7 @@ public class PlayersHandler {
         this.table = "players";
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()){
-            plugin.getMusician().updateMirror(load(onlinePlayer.getUniqueId(), () -> { }));
+            plugin.getMusician().update(load(onlinePlayer.getUniqueId(), () -> { }));
             plugin.getMusician().play();
         }
     }

@@ -5,3 +5,4 @@ authors: [ Niketion, Sorridi ]
 commands:
   coins:
   coinsadmin:
+    permission: herospvp.admin

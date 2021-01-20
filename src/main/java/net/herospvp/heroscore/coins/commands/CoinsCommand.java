@@ -26,7 +26,7 @@ public class CoinsCommand implements CommandExecutor {
             Player target = Bukkit.getPlayerExact(args[0]);
             if (target == null) {
                 if (sender.hasPermission("herospvp.admin")) {
-                    plugin.getMusician().updateMirror(plugin.getPlayersHandler().load(Bukkit.getOfflinePlayer(args[0]).getUniqueId(), () -> {
+                    plugin.getMusician().update(plugin.getPlayersHandler().load(Bukkit.getOfflinePlayer(args[0]).getUniqueId(), () -> {
                         Message.sendMessage(sender, MessageType.INFO, "Coins", "Coins di &e{0}&f: {1}", args[0],
                                 plugin.getPlayersHandler().getPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId()).getCoins()+"");
                     }));
