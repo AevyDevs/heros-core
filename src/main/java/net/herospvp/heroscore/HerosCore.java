@@ -8,14 +8,16 @@ import net.herospvp.heroscore.coins.commands.CoinsAdminCommand;
 import net.herospvp.heroscore.coins.commands.CoinsCommand;
 import net.herospvp.heroscore.coins.expansions.CoinsExpansion;
 import net.herospvp.heroscore.coins.listeners.ConnectionListeners;
-import net.herospvp.heroscore.tasks.SaveTask;
 import net.herospvp.heroscore.handlers.PlayersHandler;
+import net.herospvp.heroscore.handlers.ThreadsHandler;
+import net.herospvp.heroscore.tasks.SaveTask;
 import net.herospvp.heroscore.utils.inventory.GUIListener;
 import net.herospvp.heroscore.utils.strings.Debug;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
 public final class HerosCore extends JavaPlugin {
+
     private static HerosCore instance;
 
     private Director director;
@@ -23,30 +25,40 @@ public final class HerosCore extends JavaPlugin {
 
     private Debug debugHandler;
     private PlayersHandler playersHandler;
+    private ThreadsHandler threadsHandler;
 
     @Override
     public void onEnable() {
         instance = this;
+
+        // load default configuration
         saveDefaultConfig();
 
+        // load database
         this.director = new Director();
         Instrument guitar = new Instrument(getConfig().getString("mysql.ip"), getConfig().getString("mysql.port"),
                 getConfig().getString("mysql.user"), getConfig().getString("mysql.password"), getConfig().getString("mysql.database"),
-                "?useSSL=false&characterEncoding=utf8", null, true, 10);
+                "?useSSL=false&characterEncoding=utf8", null, true, 12);
         this.director.addInstrument("guitar", guitar);
         this.musician = new Musician(director, guitar, true);
 
+        // load handlers
         this.playersHandler = new PlayersHandler(this);
         this.debugHandler = new Debug(this);
+        this.threadsHandler = new ThreadsHandler();
 
+        // load listeners
         new GUIListener(this);
         new ConnectionListeners(this);
 
+        // load PAPI expansions
         new CoinsExpansion(this).register();
 
+        // load commands
         new CoinsCommand(this);
         new CoinsAdminCommand(this);
 
+        // load tasks
         new SaveTask(this).runTaskTimerAsynchronously(this, 20*60*10, 20*60*10);
     }
 
@@ -54,4 +66,5 @@ public final class HerosCore extends JavaPlugin {
     public void onDisable() {
         playersHandler.saveAll();
     }
+
 }

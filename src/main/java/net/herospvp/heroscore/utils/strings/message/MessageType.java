@@ -5,8 +5,9 @@ import org.bukkit.ChatColor;
 
 @Getter
 public enum MessageType {
-    INFO(ChatColor.YELLOW),
-    WARNING(ChatColor.GREEN),
+
+    INFO(ChatColor.GREEN),
+    WARNING(ChatColor.YELLOW),
     ERROR(ChatColor.RED),
     SUPER_ERROR(ChatColor.DARK_RED);
 
@@ -15,4 +16,5 @@ public enum MessageType {
     MessageType(ChatColor color) {
         this.color = color;
     }
+
 }

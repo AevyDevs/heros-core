@@ -9,8 +9,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
-public class GUIListener implements Listener
-{
+public class GUIListener implements Listener {
+
     public GUIListener(final HerosCore plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -51,4 +51,5 @@ public class GUIListener implements Listener
             e.setCancelled(true);
         }
     }
+
 }

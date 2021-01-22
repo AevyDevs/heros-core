@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 
 public class Debug {
+
     private HerosCore plugin;
     private static boolean debugMode;
 
@@ -31,4 +32,5 @@ public class Debug {
         StringBuffer output = new StringBuffer (256);
         Bukkit.getLogger().log(Level.WARNING, formatter.format (args, output, null).toString());
     }
+
 }

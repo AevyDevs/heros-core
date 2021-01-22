@@ -3,10 +3,7 @@ package net.herospvp.heroscore.utils;
 import net.herospvp.heroscore.utils.strings.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CommandHandler implements CommandExecutor, TabCompleter {
+
     private boolean onlyPlayer;
     private boolean tabComplete;
     private List<String> usage;
@@ -40,15 +38,13 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (onlyPlayer) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage("Comando eseguibile solo dai player :(");
-                return false;
-            }
+        if (onlyPlayer && sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(ChatColor.RED + "Comando eseguibile solo dai player :(");
+            return false;
         }
 
         if (permission != null && !sender.hasPermission(permission)) {
-            sender.sendMessage(ChatColor.RED + "Permesso negato.");
+            sender.sendMessage(ChatColor.RED + "Permesso negato. ("  + permission + ")");
             return false;
         }
 
@@ -84,10 +80,7 @@ public abstract class CommandHandler implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (tabComplete) {
-            return tabComplete(args);
-        }
-
-        return getDefaultTabList(args);
+        return tabComplete ? tabComplete(args) : getDefaultTabList(args);
     }
+
 }

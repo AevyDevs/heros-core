@@ -11,9 +11,12 @@ import org.bukkit.entity.Player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class PlayersHandler {
+
     @Getter private final Map<UUID, HPlayer> players;
 
     private String table;

@@ -24,6 +24,7 @@ import java.util.Map;
  * @author NonameSL
  */
 public class ItemBuilder {
+
     private ItemStack is;
     /**
      * Create a new ItemBuilder from scratch.

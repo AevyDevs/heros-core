@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @AllArgsConstructor @Getter @Setter
 public class HPlayer {
+
     private final UUID uuid;
     private int coins;
 
@@ -24,4 +25,5 @@ public class HPlayer {
     public String toString() {
         return "HPlayer{name="+ Bukkit.getOfflinePlayer(uuid).getName()+", coins="+coins+"}";
     }
+
 }

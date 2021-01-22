@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class StringUtils {
 
     public static String fromMinutesToHHmm(int minutes) {
-        long hours = TimeUnit.MINUTES.toHours((long) minutes);
+        long hours = TimeUnit.MINUTES.toHours(minutes);
         long remainMinutes = minutes - TimeUnit.HOURS.toMinutes(hours);
         return String.format("%02dh %02dm", hours, remainMinutes);
     }
@@ -19,56 +19,56 @@ public class StringUtils {
     public static long extractNumber(String string) {
         try {
             return Integer.parseInt(ChatColor.stripColor(string).replaceAll("[^0-9]", ""));
-        }catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return 0;
         }
     }
 
     public static String toRoman(int input) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         while (input >= 1000) {
-            s += "M";
+            s.append("M");
             input -= 1000;
         } while (input >= 900) {
-        s += "CM";
-        input -= 900;
-    } while (input >= 500) {
-        s += "D";
-        input -= 500;
-    } while (input >= 400) {
-        s += "CD";
-        input -= 400;
-    } while (input >= 100) {
-        s += "C";
-        input -= 100;
-    } while (input >= 90) {
-        s += "XC";
-        input -= 90;
-    } while (input >= 50) {
-        s += "L";
-        input -= 50;
-    } while (input >= 40) {
-        s += "XL";
-        input -= 40;
-    } while (input >= 10) {
-        s += "X";
-        input -= 10;
-    } while (input >= 9) {
-        s += "IX";
-        input -= 9;
-    } while (input >= 5) {
-        s += "V";
-        input -= 5;
-    } while (input >= 4) {
-        s += "IV";
-        input -= 4;
-    } while (input >= 1) {
-        s += "I";
-        input -= 1;
-    }
+            s.append("CM");
+            input -= 900;
+        } while (input >= 500) {
+            s.append("D");
+            input -= 500;
+        } while (input >= 400) {
+            s.append("CD");
+            input -= 400;
+        } while (input >= 100) {
+            s.append("C");
+            input -= 100;
+        } while (input >= 90) {
+            s.append("XC");
+            input -= 90;
+        } while (input >= 50) {
+            s.append("L");
+            input -= 50;
+        } while (input >= 40) {
+            s.append("XL");
+            input -= 40;
+        } while (input >= 10) {
+            s.append("X");
+            input -= 10;
+        } while (input >= 9) {
+            s.append("IX");
+            input -= 9;
+        } while (input >= 5) {
+            s.append("V");
+            input -= 5;
+        } while (input >= 4) {
+            s.append("IV");
+            input -= 4;
+        } while (input >= 1) {
+            s.append("I");
+            input -= 1;
+        }
 
-        return s;
+        return s.toString();
     }
 
     public static String c(String message) {

@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @AllArgsConstructor
 public class SaveTask extends BukkitRunnable {
+
     private HerosCore plugin;
 
     @Override

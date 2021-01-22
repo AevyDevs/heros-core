@@ -8,6 +8,7 @@ import org.bukkit.OfflinePlayer;
 
 @AllArgsConstructor
 public class CoinsExpansion extends PlaceholderExpansion {
+
     private HerosCore plugin;
 
     @Override
@@ -31,15 +32,13 @@ public class CoinsExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String identifier){
-        if(identifier.equals("amount")){
+    public String onRequest(OfflinePlayer player, String identifier) {
+        if (identifier.equals("amount")) {
             HPlayer coinsPlayer = plugin.getPlayersHandler().getPlayer(player.getUniqueId());
-            if (coinsPlayer == null) {
-                return "Caricamento...";
-            }
-            return coinsPlayer.getCoins()+"";
+            return coinsPlayer == null ? "Caricamento..." : String.valueOf(coinsPlayer.getCoins());
         }
 
-        return null;
+        return "?";
     }
+
 }

@@ -40,4 +40,5 @@ public class InventoryUtils {
             player.getInventory().getItem(slot).setType(Material.AIR);
         }
     }
+
 }

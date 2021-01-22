@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class GUIWindow {
-    public static Map<String, GUIWindow> windows;
+
+    public static Map<String, GUIWindow> windows = new HashMap<>();
     private Inventory inv;
     private Map<Integer, GUIItem> items;
     private Consumer<InventoryOpenEvent> onOpen;
@@ -92,7 +93,4 @@ public class GUIWindow {
         return name;
     }
 
-    static {
-        GUIWindow.windows = new HashMap<>();
-    }
 }

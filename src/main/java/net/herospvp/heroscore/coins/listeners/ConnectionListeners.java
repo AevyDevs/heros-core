@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionListeners implements Listener {
+
     private HerosCore plugin;
 
     public ConnectionListeners(HerosCore plugin) {
@@ -31,4 +32,5 @@ public class ConnectionListeners implements Listener {
         }));
         plugin.getMusician().play();
     }
+
 }
