@@ -1,5 +1,7 @@
 debug-mode: false
 mysql:
+  debug: false
+  max-pool-size: 2
   ip: localhost
   port: 3306
   user: root

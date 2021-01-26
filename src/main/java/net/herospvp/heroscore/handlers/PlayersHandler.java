@@ -19,14 +19,14 @@ public class PlayersHandler {
 
     @Getter private final Map<UUID, HPlayer> players;
 
-    private String table;
-    private HerosCore plugin;
+    private final Notes notes;
+    private final HerosCore plugin;
 
     public PlayersHandler(HerosCore plugin) {
         this.plugin = plugin;
         this.players = new HashMap<>();
 
-        this.table = "players";
+        this.notes = new Notes("players");
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()){
             plugin.getMusician().update(load(onlinePlayer.getUniqueId(), () -> { }));
@@ -43,14 +43,16 @@ public class PlayersHandler {
     }
 
     public Papers save(UUID uuid, Runnable done) {
-        return (((connection, instrument) -> {
+        return (connection, instrument) -> {
             PreparedStatement preparedStatement = null;
             try {
                 HPlayer player = getPlayer(uuid);
                 preparedStatement = connection.prepareStatement(
-                        new Notes(table).update(new String[]{"COINS"}, new Object[]{player.getCoins()}, "UUID", player.getUuid().toString())
+                        notes.update(new String[]{ "COINS" },
+                                new Object[]{ player.getCoins() },
+                                "UUID",
+                                player.getUuid().toString())
                 );
-
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -58,28 +60,28 @@ public class PlayersHandler {
                 instrument.close(null, preparedStatement, null);
                 done.run();
             }
-        }));
+        };
     }
 
     public Papers load(UUID uuid, Runnable done) {
-        return (((connection, instrument) -> {
+        return (connection, instrument) -> {
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
 
             try {
                 preparedStatement = connection.prepareStatement(
-                        new Notes(table).createTable(new String[]{"UUID CHAR(36) NOT NULL", "COINS INTEGER UNSIGNED"})
+                        notes.createTable(new String[]{"UUID CHAR(36) NOT NULL", "COINS INTEGER UNSIGNED"})
                 );
                 preparedStatement.execute();
 
                 preparedStatement = connection.prepareStatement(
-                        new Notes(table).selectWhere("COINS", "UUID", uuid.toString())
+                        notes.selectWhere("COINS", "UUID", uuid.toString())
                 );
                 resultSet = preparedStatement.executeQuery();
 
                 if (!resultSet.next()) {
                     preparedStatement = connection.prepareStatement(
-                            new Notes(table).insert(new String[]{"UUID, COINS"}, new Object[]{uuid.toString(), 0})
+                            notes.insert(new String[]{ "UUID, COINS" }, new Object[]{uuid.toString(), 0})
                     );
                     preparedStatement.executeUpdate();
                     players.put(uuid, new HPlayer(uuid, 0, false));
@@ -94,7 +96,7 @@ public class PlayersHandler {
                 instrument.close(null, preparedStatement, resultSet);
                 done.run();
             }
-        }));
+        };
     }
 
     public void saveAll() {

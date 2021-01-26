@@ -11,6 +11,7 @@ import net.herospvp.heroscore.coins.listeners.ConnectionListeners;
 import net.herospvp.heroscore.handlers.PlayersHandler;
 import net.herospvp.heroscore.handlers.ThreadsHandler;
 import net.herospvp.heroscore.tasks.SaveTask;
+import net.herospvp.heroscore.utils.Configuration;
 import net.herospvp.heroscore.utils.inventory.GUIListener;
 import net.herospvp.heroscore.utils.strings.Debug;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,21 +27,26 @@ public final class HerosCore extends JavaPlugin {
     private Debug debugHandler;
     private PlayersHandler playersHandler;
     private ThreadsHandler threadsHandler;
+    private Configuration conf;
 
     @Override
     public void onEnable() {
         instance = this;
-
+        
         // load default configuration
         saveDefaultConfig();
+        conf = new Configuration(this);
 
         // load database
         this.director = new Director();
-        Instrument guitar = new Instrument(getConfig().getString("mysql.ip"), getConfig().getString("mysql.port"),
-                getConfig().getString("mysql.user"), getConfig().getString("mysql.password"), getConfig().getString("mysql.database"),
-                "?useSSL=false&characterEncoding=utf8", null, true, 12);
+        Instrument guitar = new Instrument(conf.getString("mysql.ip"), conf.getString("mysql.port"),
+                conf.getString("mysql.user"), conf.getString("mysql.password"), conf.getString("mysql.database"),
+                "?useSSL=false&characterEncoding=utf8", null, true,
+                conf.getInt("mysql.max-pool-size"));
+
         this.director.addInstrument("guitar", guitar);
-        this.musician = new Musician(director, guitar, true);
+
+        this.musician = new Musician(director, guitar, conf.getBoolean("mysql.debug"));
 
         // load handlers
         this.playersHandler = new PlayersHandler(this);
@@ -65,6 +71,7 @@ public final class HerosCore extends JavaPlugin {
     @Override
     public void onDisable() {
         playersHandler.saveAll();
+        threadsHandler.exterminate();
     }
 
 }

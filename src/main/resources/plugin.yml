@@ -5,4 +5,5 @@ authors: [ Niketion, Sorridi ]
 commands:
   coins:
   coinsadmin:
+    aliases: [ca]
     permission: herospvp.admin

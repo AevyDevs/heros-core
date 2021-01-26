@@ -9,7 +9,7 @@ import org.bukkit.OfflinePlayer;
 @AllArgsConstructor
 public class CoinsExpansion extends PlaceholderExpansion {
 
-    private HerosCore plugin;
+    private final HerosCore plugin;
 
     @Override
     public boolean canRegister(){

@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class CoinsCommand implements CommandExecutor {
 
-    private HerosCore plugin;
+    private final HerosCore plugin;
 
     public CoinsCommand(HerosCore plugin) {
         this.plugin = plugin;
