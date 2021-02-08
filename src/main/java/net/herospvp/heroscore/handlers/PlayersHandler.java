@@ -1,6 +1,8 @@
 package net.herospvp.heroscore.handlers;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
+import net.herospvp.database.Musician;
 import net.herospvp.database.items.Notes;
 import net.herospvp.database.items.Papers;
 import net.herospvp.heroscore.HerosCore;
@@ -17,20 +19,26 @@ import java.util.UUID;
 
 public class PlayersHandler {
 
+    private final HerosCore plugin;
+
     @Getter
     private final Map<UUID, HPlayer> players;
 
     private final Notes notes;
-    private final HerosCore plugin;
+    private final Musician musician;
+
     @Getter
     private boolean saved;
 
     public PlayersHandler(HerosCore plugin) {
         this.plugin = plugin;
         this.players = new HashMap<>();
+        this.musician = plugin.getMusician();
         this.saved = false;
 
         this.notes = new Notes("players");
+
+        plugin.getMusician().update(startup());
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()){
             plugin.getMusician().update(load(onlinePlayer.getUniqueId(), () -> { }));
@@ -113,12 +121,20 @@ public class PlayersHandler {
         };
     }
 
-    public void saveAll() {
+    @SneakyThrows
+    public void saveAll(boolean definitive) {
         for (HPlayer player : players.values()) {
-            save(player.getUuid(), () -> {});
+            musician.update(save(player.getUuid(), () -> {}));
         }
-        plugin.saveConfig();
-        saved = true;
+        musician.play();
+
+        if (definitive) return;
+
+        musician.announceEnd();
+
+        while (musician.isRunning()) {
+            Thread.sleep(50);
+        }
     }
 
 }

@@ -33,7 +33,7 @@ public final class HerosCore extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        
+
         // load default configuration
         saveDefaultConfig();
         conf = new Configuration(this);
@@ -43,15 +43,16 @@ public final class HerosCore extends JavaPlugin {
 
         // an instrument can handle a single connection to a single database
         Instrument instrument = new Instrument(
-                null, conf.getString("database.ip"), conf.getString("database.port"),
-                conf.getString("database.database"), conf.getString("database.user"), conf.getString("database.password"),
-                conf.getString("database.url"), conf.getString("database.driver"), null, true,
-                conf.getInt("database.max-pool-size")
+                null, conf.getString("db.ip"), conf.getString("db.port"),
+                conf.getString("db.database"), conf.getString("db.user"), conf.getString("db.password"),
+                conf.getString("db.url"), conf.getString("db.driver"), null, true,
+                conf.getInt("db.max-pool-size")
         );
+        instrument.assemble();
 
         this.director.addInstrument("heros-core", instrument);
 
-        this.musician = new Musician(director, instrument, conf.getBoolean("mysql.debug"));
+        this.musician = new Musician(director, instrument, conf.getBoolean("db.debug"));
 
         // load handlers
         this.playersHandler = new PlayersHandler(this);
@@ -70,17 +71,14 @@ public final class HerosCore extends JavaPlugin {
         new CoinsAdminCommand(this);
 
         // load tasks
-        new SaveTask(this).runTaskTimerAsynchronously(this, 20*60*10, 20*60*10);
+        new SaveTask(this).runTaskTimerAsynchronously(this, 20*60*60, 20*60*60);
     }
 
     @SneakyThrows
     @Override
     public void onDisable() {
-        playersHandler.saveAll();
+        playersHandler.saveAll(true);
         threadsHandler.exterminate();
-        while (!playersHandler.isSaved()) {
-            Thread.sleep(50);
-        }
     }
 
 }

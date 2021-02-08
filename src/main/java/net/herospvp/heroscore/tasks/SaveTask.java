@@ -11,7 +11,7 @@ public class SaveTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        plugin.getPlayersHandler().saveAll();
+        plugin.getPlayersHandler().saveAll(false);
     }
 
 }
