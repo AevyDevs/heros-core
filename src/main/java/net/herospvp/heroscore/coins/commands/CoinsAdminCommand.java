@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class CoinsAdminCommand implements CommandExecutor {
 
-    private HerosCore plugin;
+    private final HerosCore plugin;
 
     public CoinsAdminCommand(HerosCore plugin) {
         this.plugin = plugin;

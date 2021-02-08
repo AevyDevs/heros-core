@@ -6,8 +6,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Consumer;
 
 public class GUIItem {
-    private Consumer<InventoryClickEvent> invClick;
-    private ItemStack item;
+
+    private final Consumer<InventoryClickEvent> invClick;
+    private final ItemStack item;
 
     public GUIItem(ItemStack item, final Consumer<InventoryClickEvent> toRun) {
         this.invClick = toRun;

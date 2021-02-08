@@ -14,8 +14,8 @@ import java.util.function.Consumer;
 public class GUIWindow {
 
     public static Map<String, GUIWindow> windows = new HashMap<>();
-    private Inventory inv;
-    private Map<Integer, GUIItem> items;
+    private final Inventory inv;
+    private final Map<Integer, GUIItem> items;
     private Consumer<InventoryOpenEvent> onOpen;
     private Consumer<InventoryCloseEvent> onClose;
     private boolean registered;

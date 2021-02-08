@@ -1,6 +1,7 @@
 package net.herospvp.heroscore;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import net.herospvp.database.Director;
 import net.herospvp.database.Musician;
 import net.herospvp.database.items.Instrument;
@@ -39,14 +40,18 @@ public final class HerosCore extends JavaPlugin {
 
         // load database
         this.director = new Director();
-        Instrument guitar = new Instrument(conf.getString("mysql.ip"), conf.getString("mysql.port"),
-                conf.getString("mysql.user"), conf.getString("mysql.password"), conf.getString("mysql.database"),
-                "?useSSL=false&characterEncoding=utf8", null, true,
-                conf.getInt("mysql.max-pool-size"));
 
-        this.director.addInstrument("guitar", guitar);
+        // an instrument can handle a single connection to a single database
+        Instrument instrument = new Instrument(
+                null, conf.getString("database.ip"), conf.getString("database.port"),
+                conf.getString("database.database"), conf.getString("database.user"), conf.getString("database.password"),
+                conf.getString("database.url"), conf.getString("database.driver"), null, true,
+                conf.getInt("database.max-pool-size")
+        );
 
-        this.musician = new Musician(director, guitar, conf.getBoolean("mysql.debug"));
+        this.director.addInstrument("heros-core", instrument);
+
+        this.musician = new Musician(director, instrument, conf.getBoolean("mysql.debug"));
 
         // load handlers
         this.playersHandler = new PlayersHandler(this);
@@ -68,10 +73,14 @@ public final class HerosCore extends JavaPlugin {
         new SaveTask(this).runTaskTimerAsynchronously(this, 20*60*10, 20*60*10);
     }
 
+    @SneakyThrows
     @Override
     public void onDisable() {
         playersHandler.saveAll();
         threadsHandler.exterminate();
+        while (!playersHandler.isSaved()) {
+            Thread.sleep(50);
+        }
     }
 
 }

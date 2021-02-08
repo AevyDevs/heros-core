@@ -12,11 +12,11 @@ import java.util.List;
 
 public abstract class CommandHandler implements CommandExecutor, TabCompleter {
 
-    private boolean onlyPlayer;
-    private boolean tabComplete;
-    private List<String> usage;
+    private final boolean onlyPlayer;
+    private final boolean tabComplete;
+    private final List<String> usage;
     private String permission;
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
     public CommandHandler(JavaPlugin plugin, String permission, String command, boolean onlyPlayer, List<String> usage,
                           boolean tabCompleteCustom) {

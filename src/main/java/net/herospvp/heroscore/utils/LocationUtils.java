@@ -1,4 +1,4 @@
-package net.herospvp.coreskyblock.utils;
+package net.herospvp.heroscore.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

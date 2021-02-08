@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class ItemBuilder {
 
-    private ItemStack is;
+    private final ItemStack is;
     /**
      * Create a new ItemBuilder from scratch.
      * @param m The material to create the ItemBuilder with.

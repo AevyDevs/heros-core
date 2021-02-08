@@ -8,7 +8,7 @@ import java.util.logging.Level;
 
 public class Debug {
 
-    private HerosCore plugin;
+    private final HerosCore plugin;
     private static boolean debugMode;
 
     public Debug(HerosCore plugin) {

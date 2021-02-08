@@ -1,5 +1,6 @@
 package net.herospvp.heroscore.coins.listeners;
 
+import net.herospvp.database.Musician;
 import net.herospvp.heroscore.HerosCore;
 import net.herospvp.heroscore.objects.HPlayer;
 import org.bukkit.event.EventHandler;
@@ -13,9 +14,11 @@ import java.util.UUID;
 public class ConnectionListeners implements Listener {
 
     private final HerosCore plugin;
+    private final Musician musician;
 
     public ConnectionListeners(HerosCore plugin) {
         this.plugin = plugin;
+        this.musician = plugin.getMusician();
         this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -24,8 +27,8 @@ public class ConnectionListeners implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         if (plugin.getPlayersHandler().getPlayers().containsKey(uuid)) return;
 
-        plugin.getMusician().update(plugin.getPlayersHandler().load(event.getPlayer().getUniqueId(), () -> { }));
-        plugin.getMusician().play();
+        musician.update(plugin.getPlayersHandler().load(event.getPlayer().getUniqueId(), () -> { }));
+        musician.play();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -33,10 +36,10 @@ public class ConnectionListeners implements Listener {
         HPlayer player = plugin.getPlayersHandler().getPlayer(event.getPlayer().getUniqueId());
         if (!player.isEdited()) return;
 
-        plugin.getMusician().update(plugin.getPlayersHandler().save(event.getPlayer().getUniqueId(), () -> {
+        musician.update(plugin.getPlayersHandler().save(event.getPlayer().getUniqueId(), () -> {
            plugin.getPlayersHandler().remove(event.getPlayer().getUniqueId());
         }));
-        plugin.getMusician().play();
+        musician.play();
     }
 
 }

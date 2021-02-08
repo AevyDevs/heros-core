@@ -17,21 +17,25 @@ import java.util.UUID;
 
 public class PlayersHandler {
 
-    @Getter private final Map<UUID, HPlayer> players;
+    @Getter
+    private final Map<UUID, HPlayer> players;
 
     private final Notes notes;
     private final HerosCore plugin;
+    @Getter
+    private boolean saved;
 
     public PlayersHandler(HerosCore plugin) {
         this.plugin = plugin;
         this.players = new HashMap<>();
+        this.saved = false;
 
         this.notes = new Notes("players");
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()){
             plugin.getMusician().update(load(onlinePlayer.getUniqueId(), () -> { }));
-            plugin.getMusician().play();
         }
+        plugin.getMusician().play();
     }
 
     public HPlayer getPlayer(UUID uuid) {
@@ -40,6 +44,22 @@ public class PlayersHandler {
 
     public void remove(UUID uuid) {
         players.remove(uuid);
+    }
+
+    public Papers startup() {
+        return (connection, instrument) -> {
+            PreparedStatement preparedStatement = null;
+            try {
+                preparedStatement = connection.prepareStatement(
+                        notes.createTable(new String[]{"UUID CHAR(36) NOT NULL", "COINS INTEGER UNSIGNED"})
+                );
+                preparedStatement.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                instrument.close(preparedStatement);
+            }
+        };
     }
 
     public Papers save(UUID uuid, Runnable done) {
@@ -67,13 +87,7 @@ public class PlayersHandler {
         return (connection, instrument) -> {
             PreparedStatement preparedStatement = null;
             ResultSet resultSet = null;
-
             try {
-                preparedStatement = connection.prepareStatement(
-                        notes.createTable(new String[]{"UUID CHAR(36) NOT NULL", "COINS INTEGER UNSIGNED"})
-                );
-                preparedStatement.execute();
-
                 preparedStatement = connection.prepareStatement(
                         notes.selectWhere("COINS", "UUID", uuid.toString())
                 );
@@ -93,7 +107,7 @@ public class PlayersHandler {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                instrument.close(null, preparedStatement, resultSet);
+                instrument.close(preparedStatement, resultSet);
                 done.run();
             }
         };
@@ -104,5 +118,7 @@ public class PlayersHandler {
             save(player.getUuid(), () -> {});
         }
         plugin.saveConfig();
+        saved = true;
     }
+
 }
