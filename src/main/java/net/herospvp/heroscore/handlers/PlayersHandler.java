@@ -27,14 +27,10 @@ public class PlayersHandler {
     private final Notes notes;
     private final Musician musician;
 
-    @Getter
-    private boolean saved;
-
     public PlayersHandler(HerosCore plugin) {
         this.plugin = plugin;
         this.players = new HashMap<>();
         this.musician = plugin.getMusician();
-        this.saved = false;
 
         this.notes = new Notes("players");
 
@@ -85,7 +81,7 @@ public class PlayersHandler {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                instrument.close(null, preparedStatement, null);
+                instrument.close(preparedStatement);
                 done.run();
             }
         };
