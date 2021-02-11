@@ -6,6 +6,7 @@ import net.herospvp.heroscore.HerosCore;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 
@@ -35,7 +36,7 @@ public class StatsExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer offlinePlayer, String identifier) {
+    public String onRequest(OfflinePlayer offlinePlayer, @NotNull String identifier) {
 
         Player player = offlinePlayer.getPlayer();
         if (player == null) {

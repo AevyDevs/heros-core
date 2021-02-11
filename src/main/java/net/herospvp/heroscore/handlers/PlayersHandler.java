@@ -70,7 +70,6 @@ public class PlayersHandler {
             PreparedStatement preparedStatement = null;
             try {
                 HPlayer player = getPlayer(uuid);
-                player.setEdited(false);
                 preparedStatement = connection.prepareStatement(
                         notes.update(new String[]{ "COINS" },
                                 new Object[]{ player.getCoins() },
@@ -78,6 +77,11 @@ public class PlayersHandler {
                                 player.getUuid().toString())
                 );
                 preparedStatement.executeUpdate();
+
+                synchronized (players) {
+                    players.remove(uuid);
+                }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -97,17 +101,17 @@ public class PlayersHandler {
                 );
                 resultSet = preparedStatement.executeQuery();
 
+                int coins;
                 if (!resultSet.next()) {
                     preparedStatement = connection.prepareStatement(
                             notes.insert(new String[]{ "UUID, COINS" }, new Object[]{uuid.toString(), 0})
                     );
                     preparedStatement.executeUpdate();
-                    players.put(uuid, new HPlayer(uuid, 0, false));
+                    coins = 0;
                 } else {
-                    int coins = resultSet.getInt(1);
-
-                    players.put(uuid, new HPlayer(uuid, coins, false));
+                    coins = resultSet.getInt(1);
                 }
+                players.put(uuid, new HPlayer(uuid, coins, false));
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {

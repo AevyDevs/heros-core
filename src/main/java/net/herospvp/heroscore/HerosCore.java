@@ -73,7 +73,7 @@ public final class HerosCore extends JavaPlugin {
         new CoinsAdminCommand(this);
 
         // load tasks
-        new SaveTask(this).runTaskTimerAsynchronously(this, 20*60*60, 20*60*60);
+        // new SaveTask(this).runTaskTimerAsynchronously(this, 20*60*60, 20*60*60);
     }
 
     @SneakyThrows
