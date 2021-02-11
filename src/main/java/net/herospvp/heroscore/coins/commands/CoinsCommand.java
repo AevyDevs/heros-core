@@ -29,7 +29,7 @@ public class CoinsCommand implements CommandExecutor {
 
             HPlayer hPlayer = plugin.getPlayersHandler().getPlayer(((Player)sender).getUniqueId());
             if (hPlayer == null) {
-                sender.sendMessage(ChatColor.RED + "Caricamento...");
+                Message.sendMessage(sender, MessageType.ERROR, "Coins", "Caricamento...");
                 return true;
             }
             Message.sendMessage(sender, MessageType.INFO, "Coins", "Possiedi &e{0} &fcoins", String.valueOf(hPlayer.getCoins()));
@@ -55,7 +55,7 @@ public class CoinsCommand implements CommandExecutor {
         HPlayer hTarget = plugin.getPlayersHandler().getPlayer(target.getUniqueId());
 
         if (hTarget == null) {
-            sender.sendMessage(ChatColor.RED + "Caricamento...");
+            Message.sendMessage(sender, MessageType.ERROR, "Coins", "Caricamento...");
             return true;
         }
 

@@ -71,6 +71,7 @@ public class PlayersHandler {
             PreparedStatement preparedStatement = null;
             try {
                 HPlayer player = getPlayer(uuid);
+                player.setEdited(false);
                 preparedStatement = connection.prepareStatement(
                         notes.update(new String[]{ "COINS" },
                                 new Object[]{ player.getCoins() },
