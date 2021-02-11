@@ -46,20 +46,21 @@ public class CoinsAdminCommand implements CommandExecutor {
             return true;
         }
 
+        UUID uuid = target.getUniqueId();
         switch (args[0].toLowerCase()) {
             case "set": {
                 player.setCoins(value);
-                save(target.getUniqueId(), sender);
+                save(uuid, sender);
                 break;
             }
             case "add": {
                 player.setCoins(value + player.getCoins());
-                save(target.getUniqueId(), sender);
+                save(uuid, sender);
                 break;
             }
             case "remove": {
                 player.setCoins(player.getCoins() - value);
-                save(target.getUniqueId(), sender);
+                save(uuid, sender);
                 break;
             }
             default: {
@@ -74,7 +75,6 @@ public class CoinsAdminCommand implements CommandExecutor {
         plugin.getMusician().update(plugin.getPlayersHandler().save(uuid, () -> {
             Message.sendMessage(sender, MessageType.WARNING, "Coins", "Coins impostati al nuovo valore!");
         }));
-        plugin.getMusician().play();
     }
 
 }

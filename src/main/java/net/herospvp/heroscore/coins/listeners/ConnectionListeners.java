@@ -40,7 +40,11 @@ public class ConnectionListeners implements Listener {
 
         //if (!hPlayer.isEdited()) return;
 
-        musician.update(plugin.getPlayersHandler().save(uuid, () -> {}));
+        musician.update(plugin.getPlayersHandler().save(uuid, () -> {
+            synchronized (plugin.getPlayersHandler().getPlayers()) {
+                plugin.getPlayersHandler().getPlayers().remove(uuid);
+            }
+        }));
     }
 
 }

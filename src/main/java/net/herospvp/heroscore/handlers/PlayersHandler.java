@@ -77,11 +77,6 @@ public class PlayersHandler {
                                 player.getUuid().toString())
                 );
                 preparedStatement.executeUpdate();
-
-                synchronized (players) {
-                    players.remove(uuid);
-                }
-
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
