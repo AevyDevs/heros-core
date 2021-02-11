@@ -8,6 +8,7 @@ import net.herospvp.database.items.Instrument;
 import net.herospvp.heroscore.coins.commands.CoinsAdminCommand;
 import net.herospvp.heroscore.coins.commands.CoinsCommand;
 import net.herospvp.heroscore.coins.expansions.CoinsExpansion;
+import net.herospvp.heroscore.coins.expansions.StatsExpansion;
 import net.herospvp.heroscore.coins.listeners.ConnectionListeners;
 import net.herospvp.heroscore.handlers.PlayersHandler;
 import net.herospvp.heroscore.handlers.ThreadsHandler;
@@ -65,6 +66,7 @@ public final class HerosCore extends JavaPlugin {
 
         // load PAPI expansions
         new CoinsExpansion(this).register();
+        new StatsExpansion(this).register();
 
         // load commands
         new CoinsCommand(this);
