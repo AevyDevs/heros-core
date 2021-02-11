@@ -27,8 +27,7 @@ public class ConnectionListeners implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         if (plugin.getPlayersHandler().getPlayers().containsKey(uuid)) return;
 
-        musician.update(plugin.getPlayersHandler().load(event.getPlayer().getUniqueId(), () -> { }));
-        musician.play();
+        musician.update(plugin.getPlayersHandler().load(event.getPlayer().getUniqueId(), () -> {}));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -39,7 +38,6 @@ public class ConnectionListeners implements Listener {
         musician.update(plugin.getPlayersHandler().save(event.getPlayer().getUniqueId(), () -> {
            plugin.getPlayersHandler().remove(event.getPlayer().getUniqueId());
         }));
-        musician.play();
     }
 
 }

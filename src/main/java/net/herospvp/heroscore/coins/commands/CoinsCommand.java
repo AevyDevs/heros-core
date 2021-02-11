@@ -44,7 +44,6 @@ public class CoinsCommand implements CommandExecutor {
                     Message.sendMessage(sender, MessageType.INFO, "Coins", "Coins di &e{0}&f: {1}", args[0],
                             plugin.getPlayersHandler().getPlayer(Bukkit.getOfflinePlayer(args[0]).getUniqueId()).getCoins()+"");
                 }));
-                plugin.getMusician().play();
                 return true;
             }
 
@@ -59,7 +58,7 @@ public class CoinsCommand implements CommandExecutor {
             return true;
         }
 
-        Message.sendMessage(sender, MessageType.INFO, "Coins", "Possiedi &e{0} &fcoins", String.valueOf(hTarget.getCoins()));
+        Message.sendMessage(sender, MessageType.INFO, "Coins", "Possiede &e{0} &fcoins", String.valueOf(hTarget.getCoins()));
         return true;
     }
 

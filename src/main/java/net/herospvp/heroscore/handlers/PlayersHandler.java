@@ -34,12 +34,11 @@ public class PlayersHandler {
 
         this.notes = new Notes("players");
 
-        plugin.getMusician().update(startup());
+        musician.update(startup());
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()){
-            plugin.getMusician().update(load(onlinePlayer.getUniqueId(), () -> { }));
+            musician.update(load(onlinePlayer.getUniqueId(), () -> { }));
         }
-        plugin.getMusician().play();
     }
 
     public HPlayer getPlayer(UUID uuid) {
@@ -123,13 +122,12 @@ public class PlayersHandler {
         for (HPlayer player : players.values()) {
             musician.update(save(player.getUuid(), () -> {}));
         }
-        musician.play();
 
         if (definitive) return;
 
         musician.announceEnd();
 
-        while (musician.isRunning()) {
+        while (!musician.getQueuePapers().isEmpty()) {
             Thread.sleep(50);
         }
     }
