@@ -123,13 +123,13 @@ public class PlayersHandler {
             musician.update(save(player.getUuid(), () -> {}));
         }
 
-        if (definitive) return;
-
-        musician.announceEnd();
+        if (!definitive) return;
 
         while (!musician.getQueuePapers().isEmpty()) {
             Thread.sleep(50);
         }
+
+        musician.announceEnd();
     }
 
 }
