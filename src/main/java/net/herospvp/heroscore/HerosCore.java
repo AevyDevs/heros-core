@@ -10,9 +10,9 @@ import net.herospvp.heroscore.coins.commands.CoinsCommand;
 import net.herospvp.heroscore.coins.expansions.CoinsExpansion;
 import net.herospvp.heroscore.coins.expansions.StatsExpansion;
 import net.herospvp.heroscore.coins.listeners.ConnectionListeners;
+import net.herospvp.heroscore.handlers.PacketsHandler;
 import net.herospvp.heroscore.handlers.PlayersHandler;
 import net.herospvp.heroscore.handlers.ThreadsHandler;
-import net.herospvp.heroscore.tasks.SaveTask;
 import net.herospvp.heroscore.utils.Configuration;
 import net.herospvp.heroscore.utils.inventory.GUIListener;
 import net.herospvp.heroscore.utils.strings.Debug;
@@ -63,6 +63,7 @@ public final class HerosCore extends JavaPlugin {
         // load listeners
         new GUIListener(this);
         new ConnectionListeners(this);
+        new PacketsHandler(this);
 
         // load PAPI expansions
         new CoinsExpansion(this).register();

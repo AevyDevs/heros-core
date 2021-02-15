@@ -5,6 +5,7 @@ authors: [ Niketion, Sorridi ]
 load: STARTUP
 depend:
   - PlaceholderAPI
+  - ProtocolLib
 commands:
   coins:
   coinsadmin:
