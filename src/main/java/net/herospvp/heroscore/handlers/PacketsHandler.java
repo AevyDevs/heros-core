@@ -29,7 +29,9 @@ public class PacketsHandler {
                             return;
                         }
 
-                        event.setCancelled(true);
+                        if (!event.getPlayer().hasPermission("herospvp.admin")) {
+                            event.setCancelled(true);
+                        }
                     }
                 }
         );

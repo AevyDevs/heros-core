@@ -23,7 +23,7 @@ public class LocationUtils {
     }
 
     public static Location getLocationFromString(String s) {
-        if (s == null || s.trim() == "") {
+        if (s == null || s.trim().equals("")) {
             return null;
         }
         final String[] parts = s.split(":");
@@ -47,7 +47,7 @@ public class LocationUtils {
     }
 
     public static Location getLiteLocationFromString(String s) {
-        if (s == null || s.trim() == "") {
+        if (s == null || s.trim().equals("")) {
             return null;
         }
         final String[] parts = s.split(":");
