@@ -4,6 +4,7 @@ main: net.herospvp.heroscore.HerosCore
 authors: [ Niketion, Sorridi ]
 load: STARTUP
 depend:
+  - database-lib
   - PlaceholderAPI
   - ProtocolLib
 commands:

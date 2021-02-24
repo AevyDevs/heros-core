@@ -13,8 +13,20 @@ public class HPlayer {
     private final UUID uuid;
     private int coins;
 
-    // for mysql, if you edit anything sql update the data
     private boolean edited;
+
+    public void addCoins(int amount) {
+        this.coins += amount;
+        this.edited = true;
+    }
+
+    public void removeCoins(int amount) {
+        this.coins -= amount;
+        if (coins < 0) {
+            this.coins = 0;
+        }
+        this.edited = true;
+    }
 
     public void setCoins(int amount) {
         this.coins = amount;

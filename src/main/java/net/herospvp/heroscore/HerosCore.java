@@ -2,11 +2,12 @@ package net.herospvp.heroscore;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.herospvp.database.Director;
-import net.herospvp.database.Musician;
-import net.herospvp.database.items.Instrument;
-import net.herospvp.heroscore.coins.commands.CoinsAdminCommand;
-import net.herospvp.heroscore.coins.commands.CoinsCommand;
+import net.herospvp.database.Main;
+import net.herospvp.database.lib.Director;
+import net.herospvp.database.lib.Musician;
+import net.herospvp.database.lib.items.Instrument;
+import net.herospvp.heroscore.coins.commands.CoinsAdminCommands;
+import net.herospvp.heroscore.coins.commands.CoinsCommands;
 import net.herospvp.heroscore.coins.expansions.CoinsExpansion;
 import net.herospvp.heroscore.coins.expansions.StatsExpansion;
 import net.herospvp.heroscore.coins.listeners.ConnectionListeners;
@@ -14,6 +15,8 @@ import net.herospvp.heroscore.handlers.PacketsHandler;
 import net.herospvp.heroscore.handlers.PlayersHandler;
 import net.herospvp.heroscore.handlers.ThreadsHandler;
 import net.herospvp.heroscore.utils.Configuration;
+import net.herospvp.heroscore.utils.Dependencies;
+import net.herospvp.heroscore.utils.LoggerUtils;
 import net.herospvp.heroscore.utils.inventory.GUIListener;
 import net.herospvp.heroscore.utils.strings.Debug;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +25,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class HerosCore extends JavaPlugin {
 
     private static HerosCore instance;
+
+    private LoggerUtils loggerUtils;
+    private Dependencies dependencies;
 
     private Director director;
     private Musician musician;
@@ -39,18 +45,27 @@ public final class HerosCore extends JavaPlugin {
         saveDefaultConfig();
         conf = new Configuration(this);
 
-        // load database
-        this.director = new Director();
+        //
+        // checking dependencies
+        //
+        loggerUtils = new LoggerUtils(this);
 
-        // an instrument can handle a single connection to a single database
+        dependencies = new Dependencies(this);
+        boolean val = dependencies.check("database-lib", "ProtocolLib", "PlaceholderAPI");
+
+        if (!val) return;
+
+        //
+        // database-lib
+        //
+        director = getPlugin(Main.class).getDirector();
+
         Instrument instrument = new Instrument(
-                null, conf.getString("db.ip"), conf.getString("db.port"),
+                conf.getString("db.ip"), conf.getString("db.port"),
                 conf.getString("db.database"), conf.getString("db.user"), conf.getString("db.password"),
                 conf.getString("db.url"), conf.getString("db.driver"), null, true,
                 conf.getInt("db.max-pool-size")
         );
-        instrument.assemble();
-
         this.director.addInstrument("heros-core", instrument);
 
         this.musician = new Musician(director, instrument, conf.getBoolean("db.debug"));
@@ -70,17 +85,15 @@ public final class HerosCore extends JavaPlugin {
         new StatsExpansion(this).register();
 
         // load commands
-        new CoinsCommand(this);
-        new CoinsAdminCommand(this);
+        new CoinsCommands(this, null, "coins", false, null, false);
+        new CoinsAdminCommands(this, "herospvp.admin", "coinsadmin", false, null, false);
 
-        // load tasks
-        // new SaveTask(this).runTaskTimerAsynchronously(this, 20*60*60, 20*60*60);
     }
 
     @SneakyThrows
     @Override
     public void onDisable() {
-        playersHandler.saveAll(true);
+        playersHandler.saveAll();
         threadsHandler.exterminate();
     }
 

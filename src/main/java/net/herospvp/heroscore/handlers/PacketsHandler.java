@@ -8,8 +8,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import net.herospvp.heroscore.HerosCore;
 
-import java.util.TreeSet;
-
 public class PacketsHandler {
 
     private final HerosCore instance;

@@ -1,8 +1,7 @@
 package net.herospvp.heroscore.coins.listeners;
 
-import net.herospvp.database.Musician;
+import net.herospvp.database.lib.Musician;
 import net.herospvp.heroscore.HerosCore;
-import net.herospvp.heroscore.objects.HPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,10 +26,7 @@ public class ConnectionListeners implements Listener {
     public void on(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-
-        //if (plugin.getPlayersHandler().getPlayers().containsKey(uuid)) return;
-
-        musician.update(plugin.getPlayersHandler().load(uuid, () -> {}));
+        musician.offer(plugin.getPlayersHandler().load(uuid, () -> {}));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -38,9 +34,7 @@ public class ConnectionListeners implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        //if (!hPlayer.isEdited()) return;
-
-        musician.update(plugin.getPlayersHandler().save(uuid, () -> {
+        musician.offer(plugin.getPlayersHandler().save(uuid, () -> {
             synchronized (plugin.getPlayersHandler().getPlayers()) {
                 plugin.getPlayersHandler().getPlayers().remove(uuid);
             }

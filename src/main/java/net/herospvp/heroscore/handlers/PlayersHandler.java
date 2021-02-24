@@ -2,9 +2,9 @@ package net.herospvp.heroscore.handlers;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.herospvp.database.Musician;
-import net.herospvp.database.items.Notes;
-import net.herospvp.database.items.Papers;
+import net.herospvp.database.lib.Musician;
+import net.herospvp.database.lib.items.Notes;
+import net.herospvp.database.lib.items.Papers;
 import net.herospvp.heroscore.HerosCore;
 import net.herospvp.heroscore.objects.HPlayer;
 import org.bukkit.Bukkit;
@@ -34,10 +34,10 @@ public class PlayersHandler {
 
         this.notes = new Notes("players");
 
-        musician.update(startup());
+        musician.offer(startup());
 
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()){
-            musician.update(load(onlinePlayer.getUniqueId(), () -> { }));
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            musician.offer(load(onlinePlayer.getUniqueId(), () -> { }));
         }
     }
 
@@ -70,6 +70,9 @@ public class PlayersHandler {
             PreparedStatement preparedStatement = null;
             try {
                 HPlayer player = getPlayer(uuid);
+                if (!player.isEdited()) {
+                    return;
+                }
                 preparedStatement = connection.prepareStatement(
                         notes.update(new String[]{ "COINS" },
                                 new Object[]{ player.getCoins() },
@@ -117,18 +120,18 @@ public class PlayersHandler {
     }
 
     @SneakyThrows
-    public void saveAll(boolean definitive) {
+    public void saveAll() {
+        int i = 0;
         for (HPlayer player : players.values()) {
-            musician.update(save(player.getUuid(), () -> {}));
+            musician.offer(save(player.getUuid(), () -> {}));
+            i++;
         }
 
-        if (!definitive) return;
+        plugin.getLogger().warning("Saving " + i + " entries.");
 
-        while (!musician.getQueuePapers().isEmpty()) {
+        while (!musician.getBlockingQueue().isEmpty()) {
             Thread.sleep(50);
         }
-
-        musician.announceEnd();
     }
 
 }
