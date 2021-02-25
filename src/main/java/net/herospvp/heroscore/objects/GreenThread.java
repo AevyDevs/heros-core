@@ -5,30 +5,30 @@ import net.herospvp.heroscore.HerosCore;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @SuppressWarnings("BusyWait")
 public class GreenThread extends Thread {
 
-    private final HerosCore instance;
     @Getter
     private boolean running;
     private final int executionDelay;
-    private final Queue<Runnable> runnableQueue;
+    private BlockingQueue<Runnable> runnableQueue;
 
     public GreenThread(HerosCore instance) {
-        this.instance = instance;
-        this.running = true;
-        this.executionDelay = 1000;
-        this.runnableQueue = new LinkedList<>();
-        instance.getThreadsHandler().add(this);
-        this.start();
+        this.executionDelay = 250;
+        commonInit(instance);
     }
 
     public GreenThread(HerosCore instance, int executionDelay) {
-        this.instance = instance;
-        this.running = true;
         this.executionDelay = executionDelay;
-        this.runnableQueue = new LinkedList<>();
+        commonInit(instance);
+    }
+
+    private void commonInit(HerosCore instance) {
+        this.running = true;
+        this.runnableQueue = new LinkedBlockingQueue<>();
         instance.getThreadsHandler().add(this);
         this.start();
     }
@@ -46,9 +46,7 @@ public class GreenThread extends Thread {
         try {
            while (running) {
 
-               for (Runnable runnable : runnableQueue) {
-                   runnable.run();
-               }
+               runnableQueue.forEach(Runnable::run);
 
                Thread.sleep(executionDelay);
            }

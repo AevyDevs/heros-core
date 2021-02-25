@@ -90,7 +90,6 @@ public final class HerosCore extends JavaPlugin {
 
     }
 
-    @SneakyThrows
     @Override
     public void onDisable() {
         playersHandler.saveAll();

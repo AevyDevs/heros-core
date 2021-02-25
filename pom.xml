@@ -6,7 +6,7 @@
 
     <groupId>net.herospvp</groupId>
     <artifactId>heros-core</artifactId>
-    <version>1.1.13-SNAPSHOT</version>
+    <version>1.1.14-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>heros-core</name>
@@ -97,7 +97,7 @@
         <dependency>
             <groupId>com.github.HerosDevs</groupId>
             <artifactId>database-lib</artifactId>
-            <version>1.4.1-SNAPSHOT</version>
+            <version>1.4.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.comphenix.protocol</groupId>

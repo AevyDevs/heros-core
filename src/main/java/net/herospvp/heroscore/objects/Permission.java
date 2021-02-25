@@ -1,9 +1,10 @@
 package net.herospvp.heroscore.objects;
 
 public enum Permission {
+
     ADMIN("herospvp.admin");
 
-    private String string;
+    private final String string;
 
     Permission(String string) {
         this.string = string;
@@ -13,4 +14,5 @@ public enum Permission {
     public String toString() {
         return string;
     }
+
 }
