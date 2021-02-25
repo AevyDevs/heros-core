@@ -20,6 +20,10 @@ public class Configuration {
         return instance.getConfig().getInt(string);
     }
 
+    public double getDouble(String string) {
+        return instance.getConfig().getDouble(string);
+    }
+
     public long getLong(String string) {
         return instance.getConfig().getLong(string);
     }
