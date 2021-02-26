@@ -57,6 +57,9 @@ public abstract class CommandsHandler implements CommandExecutor, TabCompleter {
         }
 
         if (!command(sender, args)) {
+            if (usage == null) {
+                return false;
+            }
             for (String s : usage) {
                 sender.sendMessage(StringUtils.c(s));
             }
