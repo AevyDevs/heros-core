@@ -1,7 +1,6 @@
 package net.herospvp.heroscore;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
 import net.herospvp.database.Main;
 import net.herospvp.database.lib.Director;
 import net.herospvp.database.lib.Musician;
@@ -15,8 +14,6 @@ import net.herospvp.heroscore.handlers.PacketsHandler;
 import net.herospvp.heroscore.handlers.PlayersHandler;
 import net.herospvp.heroscore.handlers.ThreadsHandler;
 import net.herospvp.heroscore.utils.Configuration;
-import net.herospvp.heroscore.utils.Dependencies;
-import net.herospvp.heroscore.utils.LoggerUtils;
 import net.herospvp.heroscore.utils.inventory.GUIListener;
 import net.herospvp.heroscore.utils.strings.Debug;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,10 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public final class HerosCore extends JavaPlugin {
 
-    private static HerosCore instance;
-
-    private LoggerUtils loggerUtils;
-    private Dependencies dependencies;
+    private HerosCore instance;
 
     private Director director;
     private Musician musician;
@@ -44,16 +38,6 @@ public final class HerosCore extends JavaPlugin {
         // load default configuration
         saveDefaultConfig();
         conf = new Configuration(this);
-
-        //
-        // checking dependencies
-        //
-        loggerUtils = new LoggerUtils(this);
-
-        dependencies = new Dependencies(this);
-        boolean val = dependencies.check("database-lib", "ProtocolLib", "PlaceholderAPI");
-
-        if (!val) return;
 
         //
         // database-lib

@@ -3,8 +3,6 @@ package net.herospvp.heroscore.objects;
 import lombok.Getter;
 import net.herospvp.heroscore.HerosCore;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

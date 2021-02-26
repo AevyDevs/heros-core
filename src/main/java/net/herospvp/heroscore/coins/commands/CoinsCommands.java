@@ -16,9 +16,9 @@ public class CoinsCommands extends CommandsHandler {
 
     private final HerosCore plugin;
 
-    public CoinsCommands(HerosCore plugin, String permission, String command, boolean onlyPlayer, List<String> usage, boolean tabCompleteCustom) {
-        super(plugin, permission, command, onlyPlayer, usage, tabCompleteCustom);
-        this.plugin = plugin;
+    public CoinsCommands(HerosCore instance, String permission, String command, boolean onlyPlayer, List<String> usage, boolean tabCompleteCustom) {
+        super(instance, permission, command, onlyPlayer, usage, tabCompleteCustom);
+        this.plugin = instance;
     }
 
     @Override
