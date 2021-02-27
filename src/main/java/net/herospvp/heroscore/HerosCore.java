@@ -1,7 +1,7 @@
 package net.herospvp.heroscore;
 
 import lombok.Getter;
-import net.herospvp.database.Main;
+import net.herospvp.database.DatabaseLib;
 import net.herospvp.database.lib.Director;
 import net.herospvp.database.lib.Musician;
 import net.herospvp.database.lib.items.Instrument;
@@ -42,7 +42,7 @@ public final class HerosCore extends JavaPlugin {
         //
         // database-lib
         //
-        director = getPlugin(Main.class).getDirector();
+        director = getPlugin(DatabaseLib.class).getDirector();
 
         Instrument instrument = new Instrument(
                 conf.getString("db.ip"), conf.getString("db.port"),

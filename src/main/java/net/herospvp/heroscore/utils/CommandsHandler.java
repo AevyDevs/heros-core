@@ -1,7 +1,6 @@
 package net.herospvp.heroscore.utils;
 
 import lombok.Getter;
-import net.herospvp.heroscore.HerosCore;
 import net.herospvp.heroscore.utils.strings.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
