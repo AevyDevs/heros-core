@@ -98,11 +98,13 @@
             <groupId>com.github.HerosDevs</groupId>
             <artifactId>database-lib</artifactId>
             <version>1.4.3-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.6.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
