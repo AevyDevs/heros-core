@@ -1,7 +1,6 @@
 package net.herospvp.heroscore.handlers;
 
 import com.google.common.collect.Lists;
-import net.herospvp.heroscore.HerosCore;
 import net.herospvp.heroscore.utils.workload.Workload;
 import org.bukkit.plugin.java.JavaPlugin;
 

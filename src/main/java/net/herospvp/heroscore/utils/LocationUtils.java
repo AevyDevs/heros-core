@@ -12,7 +12,7 @@ public class LocationUtils {
     }
 
     public static String extractString(Location location) {
-        return location.getBlockX() +":" + location.getBlockY() + ":" + location.getBlockZ();
+        return location.getBlockX() + ":" + location.getBlockY() + ":" + location.getBlockZ();
     }
 
     public static String getStringFromLocation(Location loc) {
@@ -23,7 +23,7 @@ public class LocationUtils {
     }
 
     public static Location getLocationFromString(String s) {
-        if (s == null || s.trim().equals("")) {
+        if (s == null || s.trim().isEmpty()) {
             return null;
         }
         final String[] parts = s.split(":");
@@ -47,7 +47,7 @@ public class LocationUtils {
     }
 
     public static Location getLiteLocationFromString(String s) {
-        if (s == null || s.trim().equals("")) {
+        if (s == null || s.trim().isEmpty()) {
             return null;
         }
         final String[] parts = s.split(":");

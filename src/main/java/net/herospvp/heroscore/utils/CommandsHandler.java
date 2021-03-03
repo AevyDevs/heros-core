@@ -7,6 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +24,14 @@ public abstract class CommandsHandler implements CommandExecutor, TabCompleter {
     private String permission;
     private final JavaPlugin plugin;
 
-    public CommandsHandler(JavaPlugin plugin, String permission, String command, boolean onlyPlayer, List<String> usage,
-                          boolean tabCompleteCustom) {
+    public CommandsHandler(
+            @NotNull JavaPlugin plugin,
+            @Nullable String permission,
+            @NotNull String command,
+            boolean onlyPlayer, 
+            @Nullable List<String> usage,
+            boolean tabCompleteCustom
+    ) {
         this.onlyPlayer = onlyPlayer;
         this.usage = usage;
         if (permission != null) {
@@ -34,7 +42,6 @@ public abstract class CommandsHandler implements CommandExecutor, TabCompleter {
 
         plugin.getCommand(command).setExecutor(this);
         plugin.getCommand(command).setTabCompleter(this);
-
     }
 
     public abstract boolean command(CommandSender sender, String[] args);
@@ -43,19 +50,20 @@ public abstract class CommandsHandler implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (onlyPlayer) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage("Comando eseguibile solo dai player :(");
-                return false;
-            }
+        if (onlyPlayer && sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(ChatColor.RED + "Comando eseguibile solo dai player :(");
+            return false;
         }
 
         if (permission != null && !sender.hasPermission(permission)) {
-            sender.sendMessage(ChatColor.RED + "Permesso negato.");
+            sender.sendMessage(ChatColor.RED + "Permesso negato. (" + permission + ")");
             return false;
         }
 
         if (!command(sender, args)) {
+            if (usage == null) {
+                return false;
+            }
             for (String s : usage) {
                 sender.sendMessage(StringUtils.c(s));
             }
@@ -65,16 +73,10 @@ public abstract class CommandsHandler implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
     public List<String> getDefaultTabList(String[] args) {
         List<String> list = new ArrayList<>();
-        if (args[args.length-1].equalsIgnoreCase("")) {
-            Bukkit.getOnlinePlayers().forEach((players) -> {
-                list.add(players.getName());
-            });
+        if (args[args.length - 1].isEmpty()) {
+            Bukkit.getOnlinePlayers().forEach((player) -> list.add(player.getName()));
         } else {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.getName().startsWith(args[args.length-1])) {
@@ -87,11 +89,11 @@ public abstract class CommandsHandler implements CommandExecutor, TabCompleter {
 
     public List<String> getArgsTabList(String[] args) {
         List<String> list = new ArrayList<>();
-        if (args[args.length-1].equalsIgnoreCase("")) {
+        if (args[args.length - 1].isEmpty()) {
             return Arrays.asList(args);
         } else {
             for (String arg : args) {
-                if (arg.startsWith(args[args.length-1])) {
+                if (arg.startsWith(args[args.length - 1])) {
                     list.add(arg);
                 }
             }
